@@ -1,0 +1,43 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Habeebullahi\.node\corepack\yarn\1.22.15\bin\yarn.js add nodemon mongoose bodyparser express cors
+
+PATH: 
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\dotnet\;C:\MinGW\bin;C:\Users\Habeebullahi\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\Habeebullahi\AppData\Local\Programs\Python\Python310\;C:\Users\Habeebullahi\AppData\Local\Microsoft\WindowsApps;;C:\Users\Habeebullahi\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Habeebullahi\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.15
+
+Node version: 
+  16.15.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/bodyparser: Not found
+      at Request.params.callback [as _callback] (C:\Users\Habeebullahi\.node\corepack\yarn\1.22.15\lib\cli.js:66140:18)
+      at Request.self.callback (C:\Users\Habeebullahi\.node\corepack\yarn\1.22.15\lib\cli.js:140885:22)
+      at Request.emit (node:events:527:28)
+      at Request.<anonymous> (C:\Users\Habeebullahi\.node\corepack\yarn\1.22.15\lib\cli.js:141857:10)
+      at Request.emit (node:events:527:28)
+      at IncomingMessage.<anonymous> (C:\Users\Habeebullahi\.node\corepack\yarn\1.22.15\lib\cli.js:141779:12)
+      at Object.onceWrapper (node:events:641:28)
+      at IncomingMessage.emit (node:events:539:35)
+      at endReadableNT (node:internal/streams/readable:1345:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "haleemas-backend",
+    "version": "1.0.0",
+    "description": "The app logic and API endpoints for the haleema-e-store project.",
+    "main": "index.js",
+    "author": "L.O Habeebullahi",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

@@ -4,8 +4,9 @@ const UserSchema = new mongoose.Schema({
   f_name: String,
   l_name: String,
   email: String,
-  password: Buffer,
-  salt: Buffer,
+  password: String, // or Number?
+  salt: String, // or Number?
+  // I think it depends on what
   date_joined: { type: Date, default: Date.now },
 });
 

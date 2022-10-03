@@ -6,36 +6,6 @@ const crypto = require("crypto");
 const { signup } = require("../controllers/authController");
 
 // Passport Configuration
-passport.use(
-  new LocalStrategy(function verify(email, password, done) {
-    User.findOne({ email: email }).then(
-      (user) => {
-        if (user != null) {
-          // user exists
-          crypto.pbkdf2(
-            password,
-            user.salt,
-            310000,
-            32,
-            "sha256",
-            (err, genPassword) => {
-              if (err) {
-                return done(err);
-              }
-              if (!crypto.timingSafeEqual(user.password, genPassword)) {
-                return done(null, false, { message: "Incorrect password" });
-              }
-              res.json({ message: "Password is correct!" });
-            }
-          );
-        }
-      },
-      (err) => {
-        console.error("Error while trying to find user: " + err);
-      }
-    );
-  })
-);
 
 const authRoute = express.Router();
 
@@ -69,6 +39,25 @@ authRoute.route("/login").post((req, res) => {
   );
 });
 
-authRoute.route("/plogin").post(passport.authenticate("local"));
+authRoute.route("/plogin").post(
+  // (req, res, next) => {
+  //   console.log(req.body);
+  //   next();
+  // },
+  passport.authenticate("local", { failureMessage: "Check your credentials" }),
+  (req, res) => {
+    const data = req.session.cart ? true : false;
+    req.session.cart = { prod1: "First Product" };
+    req.isAuthenticated
+      ? res.json({
+          session: req.session,
+          // user: req.user,
+          sessionID: req.sessionID,
+          data: data,
+          // requestObject: req,
+        })
+      : res.json({ message: "unable to login" });
+  }
+);
 
 module.exports = authRoute;

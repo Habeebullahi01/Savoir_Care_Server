@@ -56,7 +56,7 @@ app.use("/auth", authRoute);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.listen(3000, () => {
+app.listen(4000, () => {
   // connect to database
   // dbo.connectToServer((err) => {
   //   if (err) {
@@ -65,7 +65,7 @@ app.listen(3000, () => {
   // });
   connection
     .then(() => {
-      console.log("Server is running on port 3000");
+      console.log("Server is running on port 4000");
     })
     .catch((err) => {
       console.log(

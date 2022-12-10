@@ -11,8 +11,30 @@ const productRoute = require("./routes/products.js");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
+// const { auth, requiresAuth } = require("express-openid-connect");
+const { auth, requiredScopes } = require("express-oauth2-jwt-bearer");
+
 const app = express();
 app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+// Auth0
+
+const checkJwt = auth({
+  audience: "https://haleemah-test-api",
+  issuerBaseURL: `https://dev-qdwlfq2p.us.auth0.com/`,
+});
+
+app.get("/success", checkJwt, (req, res) => {
+  res.send("Login has been successful");
+});
+app.get("/profile", checkJwt, (req, res) => {
+  res.send(req.oidc.user);
+});
 //DATABASE CONNECTION
 const connection = new Promise((resolve, reject) => {
   try {
@@ -49,12 +71,20 @@ app.use(
     },
   })
 );
+
+//PASSPORT Authentication
+// require("./config/passportConfig");
+// app.use(passport.initialize());
+// app.use(passport.session());
+// app.use((req, res, next) => {
+//   console.log(req.session);
+//   console.log(req.user);
+//   next();
+// });
+
 //ROUTES
 app.use("/products", productRoute);
-app.use("/auth", authRoute);
-//PASSPORT
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use("/auth", authRoute);
 
 app.listen(4000, () => {
   // connect to database

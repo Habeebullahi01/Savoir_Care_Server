@@ -68,7 +68,29 @@ module.exports = {
       products,
     });
   },
+  getSingleProduct: async (req, res) => {
+    const result = await Product.findById(req.params.productID);
+    res.json(result);
+  },
   addProduct: async (req, res) => {
+    const reqBody = req.body;
+    console.log(req.body);
+    const product = {
+      name: reqBody.productName,
+      description: reqBody.description,
+      price: reqBody.price,
+      quantity: reqBody.quantity,
+      tags: req.body.tags,
+      imageURL: reqBody.imageURL,
+      // dateAdded: req.body.date,
+    };
+    const newProduct = new Product(product);
+    await newProduct.save().then((prod) => {
+      res.json(prod);
+    });
+  },
+  updateProduct: async (req, res) => {
+    // update by id
     const product = {
       name: req.body.name,
       description: req.body.desc,
@@ -82,9 +104,5 @@ module.exports = {
     await newProduct.save().then((prod) => {
       res.json(prod);
     });
-  },
-  getSingleProduct: async (req, res) => {
-    const result = await Product.findById(req.params.productID);
-    res.json(result);
   },
 };

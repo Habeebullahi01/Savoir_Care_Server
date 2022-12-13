@@ -24,17 +24,18 @@ app.use(
 
 // Auth0
 
-const checkJwt = auth({
-  audience: "https://haleemah-test-api",
-  issuerBaseURL: `https://dev-qdwlfq2p.us.auth0.com/`,
-});
+// const checkJwt = auth({
+//   audience: "https://haleemah-test-api",
+//   issuerBaseURL: `https://dev-qdwlfq2p.us.auth0.com/`,
+// });
 
-app.get("/success", checkJwt, (req, res) => {
-  res.send("Login has been successful");
-});
-app.get("/profile", checkJwt, (req, res) => {
-  res.send(req.oidc.user);
-});
+// app.get("/success", checkJwt, (req, res) => {
+//   res.send("Login has been successful");
+// });
+// app.get("/profile", checkJwt, (req, res) => {
+//   res.send(req.oidc.user);
+// });
+
 //DATABASE CONNECTION
 const connection = new Promise((resolve, reject) => {
   try {
@@ -51,30 +52,31 @@ const connection = new Promise((resolve, reject) => {
     console.log("Connection error:" + err);
   }
 });
+
 //SESSION
-const sessionStore = new MongoStore({
-  // clientPromise: connection,
-  mongoUrl: process.env.ATLAS_URI,
-  collection: "sessions",
-});
-app.use(
-  session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: true,
-    store: sessionStore,
-    cart: {
-      prod1: "First product",
-    },
-    cookie: {
-      maxAge: 360000 * 5 * 10,
-    },
-  })
-);
+// const sessionStore = new MongoStore({
+//   // clientPromise: connection,
+//   mongoUrl: process.env.ATLAS_URI,
+//   collection: "sessions",
+// });
+// app.use(
+//   session({
+//     secret: "secret",
+//     resave: false,
+//     saveUninitialized: true,
+//     store: sessionStore,
+//     cart: {
+//       prod1: "First product",
+//     },
+//     cookie: {
+//       maxAge: 360000 * 5 * 10,
+//     },
+//   })
+// );
 
 //PASSPORT Authentication
-// require("./config/passportConfig");
-// app.use(passport.initialize());
+require("./config/passportConfig")(passport);
+app.use(passport.initialize());
 // app.use(passport.session());
 // app.use((req, res, next) => {
 //   console.log(req.session);
@@ -84,7 +86,7 @@ app.use(
 
 //ROUTES
 app.use("/products", productRoute);
-// app.use("/auth", authRoute);
+app.use("/auth", authRoute);
 
 app.listen(4000, () => {
   // connect to database

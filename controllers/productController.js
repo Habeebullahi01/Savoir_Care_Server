@@ -74,7 +74,7 @@ module.exports = {
   },
   addProduct: async (req, res) => {
     const reqBody = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const product = {
       name: reqBody.productName,
       description: reqBody.description,
@@ -85,8 +85,10 @@ module.exports = {
       // dateAdded: req.body.date,
     };
     const newProduct = new Product(product);
+    // console.log(req.get("referer"));
     await newProduct.save().then((prod) => {
-      res.json(prod);
+      // res.redirect(`back`);
+      res.redirect(`${req.get("referer")}products/${prod._id}`);
     });
   },
   updateProduct: async (req, res) => {
@@ -102,7 +104,7 @@ module.exports = {
     };
     const newProduct = new Product(product);
     await newProduct.save().then((prod) => {
-      res.json(prod);
+      res.redirect(`/products/${prod._id}`);
     });
   },
 };

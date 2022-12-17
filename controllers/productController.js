@@ -42,14 +42,22 @@ module.exports = {
     if (req.body.sortByDate) {
       // query = { ...query, dateAdded: { $gt: "2022" } };
       // sort in ascending order
-      products = await Product.find(query)
-        .limit(itemsPerpage)
-        .sort({ dateAdded: -1 })
-        .skip(itemsPerpage * (page - 1));
+      products = await Product.find(
+        query,
+        { name: 1, imageURL: 1, price: 1 },
+        {
+          limit: itemsPerpage,
+          sort: dateAdded - 1,
+          skip: itemsPerpage * (page - 1),
+        }
+      );
     } else {
-      products = await Product.find(query, {}, { limit: 15 })
-        // .limit(itemsPerpage)
-        .skip(itemsPerpage * (page - 1));
+      products = await Product.find(
+        query,
+        { name: 1, imageURL: 1, price: 1 },
+        { limit: 15, skip: itemsPerpage * (page - 1) }
+      );
+      // .limit(itemsPerpage)
     }
     /* 
       DATA TO RETURN

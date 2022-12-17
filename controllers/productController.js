@@ -24,9 +24,9 @@ module.exports = {
     }
 
     // Response Limit (itemsPerPage)
-    if (typeof req.body.limit) {
-      itemsPerpage = req.body.limit;
-    }
+    // if (typeof req.body.limit) {
+    //   itemsPerpage = req.body.limit;
+    // }
     // page = req.body.page - 1;
     // serialization/pagification comes after/during the `find` method
 
@@ -47,8 +47,8 @@ module.exports = {
         .sort({ dateAdded: -1 })
         .skip(itemsPerpage * (page - 1));
     } else {
-      products = await Product.find(query)
-        .limit(itemsPerpage)
+      products = await Product.find(query, {}, { limit: 15 })
+        // .limit(itemsPerpage)
         .skip(itemsPerpage * (page - 1));
     }
     /* 

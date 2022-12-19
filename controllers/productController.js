@@ -78,7 +78,7 @@ module.exports = {
   },
   getSingleProduct: async (req, res) => {
     const result = await Product.findById(req.params.productID);
-    res.json(result);
+    res.status(200).json(result);
   },
   addProduct: async (req, res) => {
     const reqBody = req.body;
@@ -102,17 +102,26 @@ module.exports = {
   updateProduct: async (req, res) => {
     // update by id
     const product = {
-      name: req.body.name,
-      description: req.body.desc,
+      name: req.body.productName,
+      description: req.body.description,
       price: req.body.price,
       quantity: req.body.quantity,
-      tags: [...req.body.tags],
+      tags: req.body.tags,
       imageURL: req.body.imageURL,
       // dateAdded: req.body.date,
     };
-    const newProduct = new Product(product);
-    await newProduct.save().then((prod) => {
-      res.redirect(`/products/${prod._id}`);
-    });
+    // console.log(product);
+    // const newProduct = new Product(product);
+    // await newProduct.save().then((prod) => {
+    //   res.redirect(`/products/${prod._id}`);
+    // });
+    await Product.updateOne({ _id: req.params.id }, { $set: product })
+      .then((prod) => {
+        res.redirect(`${req.get("referer")}products/${req.params.id}`);
+        // res.send("Update successfull");
+      })
+      .catch((err) => {
+        res.json({ "Error while updating: ": err });
+      });
   },
 };

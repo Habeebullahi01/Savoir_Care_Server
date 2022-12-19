@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const authRoute = require("./routes/auth.js");
 const passport = require("passport");
+const cors = require("cors");
 // const LocalStrategy = require("passport-local");
 // const crypto = require("crypto");
 // const User = require("./models/User");
@@ -21,6 +22,10 @@ app.use(
     extended: true,
   })
 );
+const corsOptions = {
+  origin: "http://localhost:3000",
+};
+app.use(cors(corsOptions));
 
 // Auth0
 
@@ -53,36 +58,9 @@ const connection = new Promise((resolve, reject) => {
   }
 });
 
-//SESSION
-// const sessionStore = new MongoStore({
-//   // clientPromise: connection,
-//   mongoUrl: process.env.ATLAS_URI,
-//   collection: "sessions",
-// });
-// app.use(
-//   session({
-//     secret: "secret",
-//     resave: false,
-//     saveUninitialized: true,
-//     store: sessionStore,
-//     cart: {
-//       prod1: "First product",
-//     },
-//     cookie: {
-//       maxAge: 360000 * 5 * 10,
-//     },
-//   })
-// );
-
 //PASSPORT Authentication
 require("./config/passportConfig")(passport);
 app.use(passport.initialize());
-// app.use(passport.session());
-// app.use((req, res, next) => {
-//   console.log(req.session);
-//   console.log(req.user);
-//   next();
-// });
 
 //ROUTES
 app.use("/products", productRoute);

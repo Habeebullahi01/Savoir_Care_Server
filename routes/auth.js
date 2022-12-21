@@ -33,7 +33,7 @@ const isAuth = (req, res, next) => {
   }
 };
 
-authRoute.route("/signup").post(newSignup);
+authRoute.route("/signup").post(signup);
 authRoute.route("/logout").post((req, res, next) => {
   req.logout(() => {
     res.json({ msg: "Logged Out." });
@@ -47,18 +47,24 @@ authRoute.route("/failure").get((req, res, next) => {
   res.send("Login Falied. Check credentials. ");
 });
 
-authRoute.route("/plogin").post(async (req, res, next) => {
+authRoute.route("/login").post(async (req, res, next) => {
   await User.findOne({ email: req.body.email })
     .then((user) => {
-      if (verifyPassword(req.body.password, user.password, user.salt)) {
-        const tokenObject = issueJWT(user);
-        res.status(200).json({
-          msg: "Success",
-          token: tokenObject.token,
-          expiresIn: tokenObject.expiresIn,
-        });
+      if (user) {
+        if (verifyPassword(req.body.password, user.password, user.salt)) {
+          const tokenObject = issueJWT(user);
+          res.status(200).json({
+            msg: "Success",
+            token: tokenObject.token,
+            expiresIn: tokenObject.expiresIn,
+          });
+        } else {
+          res.status(200).json({ msg: "Invalid Password" });
+        }
       } else {
-        res.status(400).json({ msg: "Invalid Password" });
+        res
+          .status(200)
+          .json({ msg: "No User found with the provided credentials." });
       }
     })
     .catch((err) => {
@@ -74,7 +80,7 @@ authRoute.get(
   "/status",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    res.send("You're Authenticated.");
+    res.send("You've been Authenticated with Passport's JWT Strategy.");
   }
 );
 

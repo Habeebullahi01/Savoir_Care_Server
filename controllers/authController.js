@@ -87,7 +87,7 @@ const signup = (req, res, next) => {
           //   console.log("search completed");
           if (user != null) {
             // when user exists
-            res.json({ message: "User already exists: " + user._id });
+            res.json({ msg: "User already exists" });
           } else {
             //when user doesn't exist
             const newUser = new User({
@@ -98,7 +98,7 @@ const signup = (req, res, next) => {
               salt: salt,
             });
             await newUser.save().then((user) => {
-              res.json(user);
+              res.json({msg: "User has successfully signed up."});
               //   return next();
             });
           }

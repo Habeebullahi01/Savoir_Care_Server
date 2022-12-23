@@ -9,8 +9,8 @@ const cors = require("cors");
 require("dotenv").config({ path: "config.env" });
 // const dbo = require("./db/conn.js");
 const productRoute = require("./routes/products.js");
-// const session = require("express-session");
-// const MongoStore = require("connect-mongo");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 // const { auth, requiresAuth } = require("express-openid-connect");
 // const { auth, requiredScopes } = require("express-oauth2-jwt-bearer");
@@ -57,6 +57,16 @@ const connection = new Promise((resolve, reject) => {
     console.log("Connection error:" + err);
   }
 });
+
+// SESSION
+// app.use(
+//   session({
+//     secret: "secret kaewored",
+//     resave: false,
+//     saveUninitialized: false,
+//     store: MongoStore.create({ mongoUrl: process.env.ATLAS_URI }),
+//   })
+// );
 
 //PASSPORT Authentication
 require("./config/passportConfig")(passport);

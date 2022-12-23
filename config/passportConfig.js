@@ -65,10 +65,15 @@ function verifyLocal(email, password, done) {
 
 // Verify Callback for JWT Strategy
 function verifyJwt(jwt_payload, done) {
+  // if (!jwt_payload.sub) {
+  //   return done(null, false, { message: "You have to be logged in." });
+  // }
+  // console.log(typeof jwt_payload);
+
   User.findOne({ _id: jwt_payload.sub })
     .then((user) => {
       if (!user) {
-        return done(null, false);
+        return done(null, false, { message: "Auth required" });
       }
       return done(null, user);
     })
@@ -85,26 +90,26 @@ function verifyJwt(jwt_payload, done) {
 
 // passport.use(new JwtStrategy(jwt_strategy_options, verifyJwt));
 
-passport.serializeUser((user, done) => {
-  console.log("serializing");
-  done(null, user._id);
-});
-passport.deserializeUser((id, done) => {
-  // User.findById(id)
-  //   .then((user) => {
-  //     console.log("Finding by Id");
-  //     done(null, user);
-  //   })
-  //   .catch((err) => {
-  //     return done(err);
-  //   });
-  User.findById(id, (err, user) => {
-    if (err) {
-      return done(err);
-    }
-    done(null, user);
-  });
-});
+// passport.serializeUser((user, done) => {
+//   console.log("serializing");
+//   done(null, user._id);
+// });
+// passport.deserializeUser((id, done) => {
+//   // User.findById(id)
+//   //   .then((user) => {
+//   //     console.log("Finding by Id");
+//   //     done(null, user);
+//   //   })
+//   //   .catch((err) => {
+//   //     return done(err);
+//   //   });
+//   User.findById(id, (err, user) => {
+//     if (err) {
+//       return done(err);
+//     }
+//     done(null, user);
+//   });
+// });
 
 module.exports = (x) => {
   x.use(new JwtStrategy(jwt_strategy_options, verifyJwt));

@@ -22,8 +22,18 @@ app.use(
     extended: true,
   })
 );
+const corsWhitelist = [
+  "http://localhost:3000",
+  "https://e-store-client.vercel.app",
+];
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: (origin, callback) => {
+    if (indexof(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS."));
+    }
+  },
 };
 app.use(cors(corsOptions));
 

@@ -28,7 +28,7 @@ const corsWhitelist = [
 ];
 const corsOptions = {
   origin: (origin, callback) => {
-    if (corsWhitelist.indexof(origin) !== -1) {
+    if (corsWhitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS."));

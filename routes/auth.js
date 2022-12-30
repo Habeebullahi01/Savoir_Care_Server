@@ -7,6 +7,7 @@ const { signup, newSignup } = require("../controllers/authController");
 const passportController = require("../controllers/passportController");
 const issueJWT = require("../utils/issueJwt");
 const { verifyPassword } = require("../utils/password");
+const _ = require("lodash");
 
 // Passport Configuration
 
@@ -48,23 +49,32 @@ authRoute.route("/failure").get((req, res, next) => {
 });
 
 authRoute.route("/login").post(async (req, res, next) => {
-  await User.findOne({ email: req.body.email })
+  await User.findOne({ email: _.trim(req.body.email) })
     .then((user) => {
       if (user) {
-        if (verifyPassword(req.body.password, user.password, user.salt)) {
+        if (
+          verifyPassword(_.trim(req.body.password), user.password, user.salt)
+        ) {
           const tokenObject = issueJWT(user);
           res.status(200).json({
+            auth: true,
             msg: "Success",
             token: tokenObject.token,
             expiresIn: tokenObject.expiresIn,
           });
         } else {
-          res.status(200).json({ msg: "Invalid Password" });
+          res.status(401).json({
+            msg: "Invalid Password",
+            auth: false,
+            invalidCred: "password",
+          });
         }
       } else {
-        res
-          .status(200)
-          .json({ msg: "No User found with the provided credentials." });
+        res.status(401).json({
+          msg: "Invalid User",
+          auth: false,
+          invalidCred: "email",
+        });
       }
     })
     .catch((err) => {

@@ -24,13 +24,15 @@ app.use(
 );
 const corsWhitelist = [
   "http://localhost:3000",
-  "https://e-store-client.vercel.app",
+  "https://e-store-client.vercel.app/",
+  "https://savoir-care-admin.vercel.app/",
 ];
 const corsOptions = {
   origin: (origin, callback) => {
     if (corsWhitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
+      console.log(origin);
       callback(new Error("Not allowed by CORS."));
     }
   },

@@ -11,11 +11,6 @@ productRoute.route("/updateProduct/:id").post(productController.updateProduct);
 productRoute.route("/:productID").get(
   passport.authenticate("jwt", {
     session: false,
-    successMessage: { msg: "success" },
-    // failureMessage: true,
-    // failureRedirect: "/auth/login",
-
-    // failureFlash: { msg: "You have to login" },
   }),
   productController.getSingleProduct
 );

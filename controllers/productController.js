@@ -1,6 +1,7 @@
 // const dbo = require("../db/conn.js");
 
 const Product = require("../models/Product");
+const _ = require("lodash");
 
 module.exports = {
   getProducts: async (req, res) => {
@@ -84,8 +85,8 @@ module.exports = {
     const reqBody = req.body;
     // console.log(req.body);
     const product = {
-      name: reqBody.productName,
-      description: reqBody.description,
+      name: _.trim(reqBody.productName),
+      description: _.trim(reqBody.description),
       price: reqBody.price,
       quantity: reqBody.quantity,
       tags: req.body.tags,
@@ -102,8 +103,8 @@ module.exports = {
   updateProduct: async (req, res) => {
     // update by id
     const product = {
-      name: req.body.productName,
-      description: req.body.description,
+      name: _.trim(req.body.productName),
+      description: _.trim(req.body.description),
       price: req.body.price,
       quantity: req.body.quantity,
       tags: req.body.tags,

@@ -73,7 +73,7 @@ function verifyJwt(jwt_payload, done) {
   User.findOne({ _id: jwt_payload.sub })
     .then((user) => {
       if (!user) {
-        return done(null, false, { message: "Auth required" });
+        return done(null, false);
       }
       return done(null, user);
     })

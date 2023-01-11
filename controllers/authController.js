@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Admin = require("../models/Admin");
 const crypto = require("crypto");
 const { generatePassword } = require("../utils/password");
 const _ = require("lodash");
@@ -61,28 +62,32 @@ const signup = (req, res, next) => {
   );
 };
 
-const newSignup = (req, res, next) => {
-  User.findOne({ email: req.body.email }).then(async (user) => {
+const adminSignup = async (req, res, next) => {
+  await Admin.findOne({ email: _.trim(req.body.email) }).then(async (user) => {
     if (user) {
-      res.json({ msg: "User already exists" });
+      res.status(401).json({
+        msg: "Admin email already exists",
+        auth: false,
+        invalidCred: "email",
+      });
     } else {
-      const hashedPassword = generatePassword(req.body.password);
-      const newUser = new User({
-        f_name: req.body.f_name,
-        l_name: req.body.l_name,
-        email: req.body.email,
+      const hashedPassword = generatePassword(_.trim(req.body.password));
+      const newUser = new Admin({
+        f_name: _.trim(req.body.f_name),
+        l_name: _.trim(req.body.l_name),
+        email: _.trim(req.body.email),
         password: hashedPassword.hash,
         salt: hashedPassword.salt,
       });
       await newUser.save().then((user) => {
-        res.json(user);
-        //   return next();
+        res.status(200).json(user);
       });
     }
+    return next();
   });
 };
 
 module.exports = {
   signup,
-  newSignup,
+  adminSignup,
 };

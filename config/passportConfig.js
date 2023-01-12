@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Admin = require("../models/Admin");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const JWT_Strategy = require("passport-jwt");
@@ -69,17 +70,29 @@ function verifyJwt(jwt_payload, done) {
   //   return done(null, false, { message: "You have to be logged in." });
   // }
   // console.log(typeof jwt_payload);
-
-  User.findOne({ _id: jwt_payload.sub })
-    .then((user) => {
-      if (!user) {
-        return done(null, false);
-      }
-      return done(null, user);
-    })
-    .catch((err) => {
-      return done(err, false);
-    });
+  if (jwt_payload.isAdmin == true) {
+    Admin.findOne({ _id: jwt_payload.sub })
+      .then((user) => {
+        if (!user) {
+          return done(null, false);
+        }
+        return done(null, user);
+      })
+      .catch((err) => {
+        return done(err, false);
+      });
+  } else {
+    User.findOne({ _id: jwt_payload.sub })
+      .then((user) => {
+        if (!user) {
+          return done(null, false);
+        }
+        return done(null, user);
+      })
+      .catch((err) => {
+        return done(err, false);
+      });
+  }
 }
 
 // Local strategy

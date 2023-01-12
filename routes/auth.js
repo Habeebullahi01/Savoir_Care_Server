@@ -89,12 +89,12 @@ authRoute.route("/login").post(async (req, res, next) => {
 });
 authRoute.route("/admin/login").post(async (req, res, next) => {
   await Admin.findOne({ email: _.trim(req.body.email) })
-    .then((user) => {
-      if (user && user.admin == true) {
+    .then((admin) => {
+      if (admin && admin.isAdmin == true) {
         if (
-          verifyPassword(_.trim(req.body.password), user.password, user.salt)
+          verifyPassword(_.trim(req.body.password), admin.password, admin.salt)
         ) {
-          const tokenObject = issueJWT(user);
+          const tokenObject = issueJWT(admin);
           res.status(200).json({
             auth: true,
             msg: "Success",

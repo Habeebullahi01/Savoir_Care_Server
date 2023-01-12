@@ -7,7 +7,7 @@ const AdminSchema = new mongoose.Schema({
   password: String,
   salt: String,
   date_joined: { type: Date, default: Date.now },
-  admin: { type: Boolean, default: true },
+  isAdmin: { type: Boolean, default: true },
 });
 
 const Admin = mongoose.model("Admin", AdminSchema);

@@ -15,6 +15,14 @@ const [JwtStrategy, ExtractJwt] = [
   JWT_Strategy.Strategy,
   JWT_Strategy.ExtractJwt,
 ];
+// Custom Extractor Function
+const cookieExtractor = (req) => {
+  var token;
+  if (req && req.cookies) {
+    token = req.cookies["auth"];
+  }
+  return token;
+};
 const jwt_strategy_options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: PUB_KEY,

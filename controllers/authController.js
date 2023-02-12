@@ -45,11 +45,15 @@ const signup = (req, res, next) => {
               // });
               //   return next();
               const tokenObject = issueJWT(user);
-              res.status(200).json({
+              res.cookie("auth", tokenObject.token, {
+                maxAge: tokenObject.maxAge,
+                // httpOnly: true,
+              });
+              res.status(201).json({
                 auth: true,
                 msg: "User has successfully signed up.",
                 token: tokenObject.token,
-                expiresIn: tokenObject.expiresIn,
+                // expiresIn: tokenObject.expiresIn,
               });
             });
           }
@@ -79,8 +83,17 @@ const adminSignup = async (req, res, next) => {
         password: hashedPassword.hash,
         salt: hashedPassword.salt,
       });
-      await newUser.save().then((user) => {
-        res.status(200).json(user);
+      await newUser.save().then((admin) => {
+        // res.status(200).json(user);
+        const tokenObject = issueJWT(admin);
+        res.cookie("admin_auth", tokenObject.token, {
+          maxAge: tokenObject.maxAge,
+          path: "/",
+        });
+        res.status(201).json({
+          auth: true,
+          token: tokenObject.token,
+        });
       });
     }
     return next();

@@ -8,6 +8,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^4.6.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
@@ -24,5 +25,9 @@
   "devDependencies": {
     "express-oauth2-jwt-bearer": "^1.2.0",
     "express-openid-connect": "^2.8.0"
+  },
+  "scripts": {
+    "dev": "nodemon index",
+    "start": "node index"
   }
 }

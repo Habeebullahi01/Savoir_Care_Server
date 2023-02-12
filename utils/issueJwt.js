@@ -13,12 +13,11 @@ const issueJWT = (user) => {
   };
   const signedToken = jwt.sign(payload, PRIV_KEY, {
     algorithm: "RS256",
-    expiresIn: "1d",
   });
 
   return {
     token: "Bearer " + signedToken,
-    expiresIn: "1d",
+    maxAge: 7 * 24 * 60 * 60,
   };
 };
 

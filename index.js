@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const authRoute = require("./routes/auth.js");
 const passport = require("passport");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 // const LocalStrategy = require("passport-local");
 // const crypto = require("crypto");
 // const User = require("./models/User");
@@ -39,6 +40,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use(cookieParser());
 // Auth0
 
 // const checkJwt = auth({

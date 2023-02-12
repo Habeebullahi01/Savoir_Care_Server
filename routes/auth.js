@@ -58,12 +58,22 @@ authRoute.route("/login").post(async (req, res, next) => {
           verifyPassword(_.trim(req.body.password), user.password, user.salt)
         ) {
           const tokenObject = issueJWT(user);
-          res.status(200).json({
-            auth: true,
-            msg: "Success",
-            token: tokenObject.token,
-            expiresIn: tokenObject.expiresIn,
-          });
+          res
+            .status(200)
+            .cookie("auth", tokenObject.token, {
+              // expires: tokenObject.expiresIn,
+              maxAge: tokenObject.maxAge,
+              // httpOnly: true,
+            })
+            .json({
+              auth: true,
+              msg: "Success",
+              token: tokenObject.token,
+            });
+          // res.status(200).json({
+          //   auth: true,
+          //   msg: "Success",
+          // });
         } else {
           res.status(401).json({
             msg: "Invalid Password",
@@ -95,11 +105,14 @@ authRoute.route("/admin/login").post(async (req, res, next) => {
           verifyPassword(_.trim(req.body.password), admin.password, admin.salt)
         ) {
           const tokenObject = issueJWT(admin);
+          res.cookie("admin_auth", tokenObject.token, {
+            maxAge: tokenObject.maxAge,
+            httpOnly: true,
+          });
           res.status(200).json({
             auth: true,
             msg: "Success",
             token: tokenObject.token,
-            expiresIn: tokenObject.expiresIn,
           });
         } else {
           res.status(401).json({

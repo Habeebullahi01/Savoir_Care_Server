@@ -20,8 +20,8 @@ module.exports = {
     //                QUERY CONSTRUCTION
     let query;
     // Filter by tag(s)
-    if (req.body.tags) {
-      query = { ...query, tags: req.body.tags };
+    if (req.query.tags) {
+      query = { ...query, tags: req.query.tags };
     }
 
     // Response Limit (itemsPerPage)
@@ -34,13 +34,13 @@ module.exports = {
     // Filter by date
     const totalItemCount = await Product.countDocuments(query);
     const totalPageCount = Math.ceil(totalItemCount / itemsPerpage);
-    req.body.page > 1
-      ? req.body.page > totalPageCount
+    req.query.page > 1
+      ? req.query.page > totalPageCount
         ? (page = totalPageCount)
-        : (page = req.body.page)
+        : (page = req.query.page)
       : (page = 1);
 
-    if (req.body.sortByDate) {
+    if (req.query.sortByDate) {
       // query = { ...query, dateAdded: { $gt: "2022" } };
       // sort in ascending order
       products = await Product.find(

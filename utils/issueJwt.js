@@ -5,18 +5,19 @@ const PRIV_KEY = fs.readFileSync(__dirname + "/priv_key.pem", "utf-8");
 
 const issueJWT = (user) => {
   const _id = user._id;
+  const isAdmin = user.isAdmin == true ? true : false;
   const payload = {
     sub: _id,
+    isAdmin,
     iat: Date.now(),
   };
   const signedToken = jwt.sign(payload, PRIV_KEY, {
     algorithm: "RS256",
-    expiresIn: "1d",
   });
 
   return {
     token: "Bearer " + signedToken,
-    expiresIn: "1d",
+    maxAge: 7 * 24 * 60 * 60,
   };
 };
 

@@ -33,7 +33,7 @@ const corsOptions = {
     if (corsWhitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      console.log(origin);
+      // console.log(origin);
       callback(new Error("Not allowed by CORS."));
     }
   },
@@ -109,3 +109,5 @@ app.listen(4000, () => {
 
   // console.log("server is running");
 });
+
+module.exports = app;

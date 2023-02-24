@@ -4,9 +4,13 @@ This project is the Backend API server for the Savoir Care project.
 
 ## Endpoints
 
-The base URL https://e-store-server.cyclic.app to which all routes are appended.
+The base URL [https://e-store-server.cyclic.app] to which all routes are appended.
 
 ### /auth/login (POST)
+
+Returns a response of status 400(Bad Request) when the required fields are absent, with a body that contains the _message_ property that states the details of the error.
+
+Returns a response of status 401(Not Found) when either of the required fields is incorrect, with a body that contains the _message_ property that states the details of the error.
 
 ### /auth/signup (POST)
 
@@ -36,7 +40,7 @@ This returns an object containing details about the current cursor on the invent
 
 ### /products/[id] (GET)
 
-This returns an object containing the details of a specific product, as specified by it's \__id_ in the dynamic route parameter _id_. A sample is given below.
+This returns an object containing the details of a product whose \__id_ in the database is equal to the dynamic route parameter _id_. A sample is given below.
 
 ```js
 {

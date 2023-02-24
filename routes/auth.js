@@ -51,6 +51,15 @@ authRoute.route("/failure").get((req, res, next) => {
 });
 
 authRoute.route("/login").post(async (req, res, next) => {
+  if (req.body == null || Object.keys(req.body).length === 0) {
+    res.status(400).json({ message: "Request body should not be empty." });
+    // return;
+  } else if (!req.body.email) {
+    res.status(400).json({ message: "Email field should not be empty." });
+  } else if (!req.body.password) {
+    res.status(400).json({ message: "Password field should not be empty." });
+  }
+  // console.log(req.body);
   await User.findOne({ email: _.trim(req.body.email) })
     .then((user) => {
       if (user) {
@@ -76,14 +85,14 @@ authRoute.route("/login").post(async (req, res, next) => {
           // });
         } else {
           res.status(401).json({
-            msg: "Invalid Password",
+            message: "Invalid Password",
             auth: false,
             invalidCred: "password",
           });
         }
       } else {
         res.status(401).json({
-          msg: "Invalid User",
+          message: "Invalid User",
           auth: false,
           invalidCred: "email",
         });

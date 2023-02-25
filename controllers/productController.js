@@ -8,14 +8,6 @@ module.exports = {
     let products;
     let itemsPerpage = 15;
     let page = 1;
-    // let db_connect = dbo.getDB();
-    // db_connect
-    //   .collection("products")
-    //   .find({})
-    //   .toArray((err, result) => {
-    //     if (err) throw err;
-    //     res.json(result);
-    //   });
 
     //                QUERY CONSTRUCTION
     let query;
@@ -25,21 +17,25 @@ module.exports = {
     }
 
     // Response Limit (itemsPerPage)
-    // if (typeof req.body.limit) {
-    //   itemsPerpage = req.body.limit;
-    // }
+    if (req.query.limit) {
+      itemsPerpage = parseInt(req.query.limit);
+    }
     // page = req.body.page - 1;
     // serialization/pagification comes after/during the `find` method
 
-    // Filter by date
     const totalItemCount = await Product.countDocuments(query);
     const totalPageCount = Math.ceil(totalItemCount / itemsPerpage);
-    req.query.page > 1
-      ? req.query.page > totalPageCount
-        ? (page = totalPageCount)
-        : (page = req.query.page)
-      : (page = 1);
+    if (req.query.page > 1) {
+      if (req.query.page > totalPageCount) {
+        page = totalPageCount;
+      } else {
+        page = parseInt(req.query.page);
+      }
+    } else {
+      page = 1;
+    }
 
+    // Filter by date
     if (req.query.sortByDate) {
       // query = { ...query, dateAdded: { $gt: "2022" } };
       // sort in ascending order
@@ -48,7 +44,7 @@ module.exports = {
         { name: 1, imageURL: 1, price: 1 },
         {
           limit: itemsPerpage,
-          sort: dateAdded - 1,
+          sort: { dateAdded: -1 },
           skip: itemsPerpage * (page - 1),
         }
       );
@@ -56,7 +52,7 @@ module.exports = {
       products = await Product.find(
         query,
         { name: 1, imageURL: 1, price: 1 },
-        { limit: 15, skip: itemsPerpage * (page - 1) }
+        { limit: itemsPerpage, skip: itemsPerpage * (page - 1) }
       );
       // .limit(itemsPerpage)
     }

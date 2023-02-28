@@ -76,5 +76,11 @@ productRoute.route("/:productID").get(
   }),
   productController.getSingleProduct
 );
-
+productRoute.route("/deleteProduct/:id").delete(
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  checkAdmin,
+  productController.deleteProduct
+);
 module.exports = productRoute;

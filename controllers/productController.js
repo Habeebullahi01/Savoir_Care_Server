@@ -126,4 +126,24 @@ module.exports = {
         res.json({ "Error while updating: ": err });
       });
   },
+  deleteProduct: async (req, res) => {
+    await Product.deleteOne({ _id: req.params.id })
+      .then((response) => {
+        if (response.deletedCount > 0) {
+          res.status(200).json({ message: "Product has been deleted." });
+        } else {
+          res
+            .status(404)
+            .json({ message: "The required product was not found." });
+        }
+      })
+      .catch((e) => {
+        if (e) {
+          console.log(e);
+          res.status(500).json({
+            message: "An error occured while processing the request.",
+          });
+        }
+      });
+  },
 };

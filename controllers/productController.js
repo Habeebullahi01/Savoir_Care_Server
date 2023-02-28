@@ -93,7 +93,8 @@ module.exports = {
     // console.log(req.get("referer"));
     await newProduct.save().then((prod) => {
       // res.redirect(`back`);
-      res.redirect(`${req.get("referer")}products/${prod._id}`);
+      // res.redirect(`${req.get("referer")}products/${prod._id}`);
+      res.status(201).json(prod);
     });
   },
   updateProduct: async (req, res) => {
@@ -113,9 +114,13 @@ module.exports = {
     //   res.redirect(`/products/${prod._id}`);
     // });
     await Product.updateOne({ _id: req.params.id }, { $set: product })
-      .then((prod) => {
-        res.redirect(`${req.get("referer")}products/${req.params.id}`);
+      .then((result) => {
+        // res.redirect(`${req.get("referer")}products/${req.params.id}`);
         // res.send("Update successfull");
+        res.status(201).json({
+          acknowledged: result.acknowledged,
+          productID: req.params.id,
+        });
       })
       .catch((err) => {
         res.json({ "Error while updating: ": err });

@@ -8,14 +8,6 @@ module.exports = {
     let products;
     let itemsPerpage = 15;
     let page = 1;
-    // let db_connect = dbo.getDB();
-    // db_connect
-    //   .collection("products")
-    //   .find({})
-    //   .toArray((err, result) => {
-    //     if (err) throw err;
-    //     res.json(result);
-    //   });
 
     //                QUERY CONSTRUCTION
     let query;
@@ -25,21 +17,25 @@ module.exports = {
     }
 
     // Response Limit (itemsPerPage)
-    // if (typeof req.body.limit) {
-    //   itemsPerpage = req.body.limit;
-    // }
+    if (req.query.limit) {
+      itemsPerpage = parseInt(req.query.limit);
+    }
     // page = req.body.page - 1;
     // serialization/pagification comes after/during the `find` method
 
-    // Filter by date
     const totalItemCount = await Product.countDocuments(query);
     const totalPageCount = Math.ceil(totalItemCount / itemsPerpage);
-    req.query.page > 1
-      ? req.query.page > totalPageCount
-        ? (page = totalPageCount)
-        : (page = req.query.page)
-      : (page = 1);
+    if (req.query.page > 1) {
+      if (req.query.page > totalPageCount) {
+        page = totalPageCount;
+      } else {
+        page = parseInt(req.query.page);
+      }
+    } else {
+      page = 1;
+    }
 
+    // Filter by date
     if (req.query.sortByDate) {
       // query = { ...query, dateAdded: { $gt: "2022" } };
       // sort in ascending order
@@ -48,7 +44,7 @@ module.exports = {
         { name: 1, imageURL: 1, price: 1 },
         {
           limit: itemsPerpage,
-          sort: dateAdded - 1,
+          sort: { dateAdded: -1 },
           skip: itemsPerpage * (page - 1),
         }
       );
@@ -56,7 +52,7 @@ module.exports = {
       products = await Product.find(
         query,
         { name: 1, imageURL: 1, price: 1 },
-        { limit: 15, skip: itemsPerpage * (page - 1) }
+        { limit: itemsPerpage, skip: itemsPerpage * (page - 1) }
       );
       // .limit(itemsPerpage)
     }
@@ -97,7 +93,8 @@ module.exports = {
     // console.log(req.get("referer"));
     await newProduct.save().then((prod) => {
       // res.redirect(`back`);
-      res.redirect(`${req.get("referer")}products/${prod._id}`);
+      // res.redirect(`${req.get("referer")}products/${prod._id}`);
+      res.status(201).json(prod);
     });
   },
   updateProduct: async (req, res) => {
@@ -117,12 +114,36 @@ module.exports = {
     //   res.redirect(`/products/${prod._id}`);
     // });
     await Product.updateOne({ _id: req.params.id }, { $set: product })
-      .then((prod) => {
-        res.redirect(`${req.get("referer")}products/${req.params.id}`);
+      .then((result) => {
+        // res.redirect(`${req.get("referer")}products/${req.params.id}`);
         // res.send("Update successfull");
+        res.status(201).json({
+          acknowledged: result.acknowledged,
+          productID: req.params.id,
+        });
       })
       .catch((err) => {
         res.json({ "Error while updating: ": err });
+      });
+  },
+  deleteProduct: async (req, res) => {
+    await Product.deleteOne({ _id: req.params.id })
+      .then((response) => {
+        if (response.deletedCount > 0) {
+          res.status(200).json({ message: "Product has been deleted." });
+        } else {
+          res
+            .status(404)
+            .json({ message: "The required product was not found." });
+        }
+      })
+      .catch((e) => {
+        if (e) {
+          console.log(e);
+          res.status(500).json({
+            message: "An error occured while processing the request.",
+          });
+        }
       });
   },
 };

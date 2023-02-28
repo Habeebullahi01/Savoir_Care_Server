@@ -11,32 +11,76 @@ function checkAdmin(req, res, next) {
   } else {
     // next(null);
     return res.status(401).json({
-      msg: "Unauthorised",
+      message: "Unauthorised",
       isAdmin: false,
     });
   }
 }
 
 productRoute.route("/").get(productController.getProducts);
-productRoute
-  .route("/addProduct")
-  .post(
-    passport.authenticate("jwt", { session: false }),
-    checkAdmin,
-    productController.addProduct
-  );
-productRoute
-  .route("/updateProduct/:id")
-  .post(
-    passport.authenticate("jwt", { session: false }),
-    checkAdmin,
-    productController.updateProduct
-  );
+productRoute.route("/addProduct").post(
+  passport.authenticate("jwt", { session: false }),
+  checkAdmin,
+  (req, res, next) => {
+    if (Object.keys(req.body).length == 0) {
+      res.status(400).json({
+        message: "The request body shouldn't be empty",
+      });
+    } else if (
+      !req.body.productName ||
+      !req.body.description ||
+      !req.body.quantity ||
+      !req.body.price ||
+      !req.body.imageURL ||
+      !req.body.tags
+    ) {
+      res.status(400).json({
+        message:
+          "Check the request body for possible absence of required fields.",
+      });
+    } else {
+      next();
+    }
+  },
+  productController.addProduct
+);
+productRoute.route("/updateProduct/:id").post(
+  passport.authenticate("jwt", { session: false }),
+  checkAdmin,
+  (req, res, next) => {
+    if (Object.keys(req.body).length == 0) {
+      res.status(400).json({
+        message: "The request body shouldn't be empty",
+      });
+    } else if (
+      !req.body.productName &&
+      !req.body.description &&
+      !req.body.quantity &&
+      !req.body.price &&
+      !req.body.imageURL &&
+      !req.body.tags
+    ) {
+      res.status(400).json({
+        message:
+          "Check the request body for possible absence of required fields.",
+      });
+    } else {
+      next();
+    }
+  },
+  productController.updateProduct
+);
 productRoute.route("/:productID").get(
   passport.authenticate("jwt", {
     session: false,
   }),
   productController.getSingleProduct
 );
-
+productRoute.route("/deleteProduct/:id").delete(
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  checkAdmin,
+  productController.deleteProduct
+);
 module.exports = productRoute;

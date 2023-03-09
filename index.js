@@ -12,6 +12,7 @@ require("dotenv").config({ path: "config.env" });
 const productRoute = require("./routes/products.js");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
+const cartRoute = require("./routes/cart.js");
 
 // const { auth, requiresAuth } = require("express-openid-connect");
 // const { auth, requiredScopes } = require("express-oauth2-jwt-bearer");
@@ -87,8 +88,9 @@ require("./config/passportConfig")(passport);
 app.use(passport.initialize());
 
 //ROUTES
-app.use("/products", productRoute);
 app.use("/auth", authRoute);
+app.use("/products", productRoute);
+app.use("/cart", cartRoute);
 
 app.listen(4000, () => {
   // connect to database

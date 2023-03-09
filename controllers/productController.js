@@ -1,6 +1,6 @@
 // const dbo = require("../db/conn.js");
 
-const Product = require("../models/Product");
+const Product = require("../models/Product").Product;
 const _ = require("lodash");
 
 module.exports = {

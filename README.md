@@ -279,3 +279,80 @@ This removes an item from the logged in user's cart document.
   "messsage": "Removed ____ items from cart."
 }
 ```
+
+### /order (GET)
+
+Goal: _Retrieve all orders made by client._
+
+This returns an array of orders that have been made by the logged in user.
+
+#### Sample Response
+
+```json
+[
+    {
+        "_id": "1a882a4qeqfeqf137faef45t98",
+        "user_id": "54g546h5edb3g7j76k7890lu",
+        "paymentStatus": "Pending",
+        "location": "The location",
+        "delivery_date": null,
+        "order_status": "Processing",
+        "products": [
+            {
+                "quantity": 4,
+                "variation": "3",
+                "_id": "63ffef937101944dee76e7a1"
+            },
+            {
+                "quantity": 5,
+                "variation": "blue",
+                "_id": "6409214f1c8917896d33939d"
+            },
+            {
+                "quantity": 9,
+                "variation": "red",
+                "_id": "6409219f1c8917896d3393b5"
+            }
+        ],
+        "order_date": "2023-03-15T11:14:10.937Z",
+        "__v": 0
+    },...
+]
+```
+
+### /order (POST)
+
+Goal: _Create a new order._
+
+This needs creates a new order on behalf of the logged in user. The products in the user's cart are the object of the order, and the cart will be emptied once the order has been made. The _location_ request parameter must be sent with this request. Optional request parameter _extra_info_ can be sent to include miscelleanous details about the order.
+
+#### Sample Request
+
+```json
+{
+  "location": "1, Infinite Loop, Silicon valley, SF.",
+  "extra_info": "Please deliver the products in a white carton."
+}
+```
+
+#### Sample Response
+
+```json
+{
+  "message": "Order Created"
+}
+```
+
+It may respond with an error and its details.
+
+```json
+{
+  "message": "Cart is empty. No products found."
+}
+```
+
+```json
+{
+  "message": "Location cannot be empty."
+}
+```

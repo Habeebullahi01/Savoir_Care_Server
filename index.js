@@ -4,15 +4,10 @@ const authRoute = require("./routes/auth.js");
 const passport = require("passport");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-// const LocalStrategy = require("passport-local");
-// const crypto = require("crypto");
-// const User = require("./models/User");
 require("dotenv").config({ path: "config.env" });
-// const dbo = require("./db/conn.js");
 const productRoute = require("./routes/products.js");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
 const cartRoute = require("./routes/cart.js");
+const orderRoute = require("./routes/order.js");
 
 // const { auth, requiresAuth } = require("express-openid-connect");
 // const { auth, requiredScopes } = require("express-oauth2-jwt-bearer");
@@ -91,6 +86,7 @@ app.use(passport.initialize());
 app.use("/auth", authRoute);
 app.use("/products", productRoute);
 app.use("/cart", cartRoute);
+app.use("/order", orderRoute);
 
 app.listen(4000, () => {
   // connect to database

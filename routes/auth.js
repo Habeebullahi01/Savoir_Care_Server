@@ -49,7 +49,7 @@ const isAuth = (req, res, next) => {
  *          schema:
  *            $ref: '#/components/schemas/SignupRequest'
  *    responses:
- *      200:
+ *      201:
  *        description: OK
  *        content:
  *          application/json:
@@ -92,7 +92,7 @@ authRoute.route("/signup").post(signup);
  *          schema:
  *            $ref: '#/components/schemas/SignupRequest'
  *    responses:
- *      200:
+ *      201:
  *        description: Signup successful
  *        content:
  *          application/json:

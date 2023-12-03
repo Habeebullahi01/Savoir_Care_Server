@@ -59,7 +59,7 @@ const isAuth = (req, res, next) => {
  *              auth: true
  *              msg: Success
  *              token: Bearer 65dss651vsv5sv5dvs54vs11vs
- *      400:
+ *      401:
  *        description: Bad Request
  *        content:
  *          application/json:
@@ -102,7 +102,7 @@ authRoute.route("/signup").post(signup);
  *              auth: true
  *              msg: Success
  *              token: Bearer 65dss651vsv5sv5dvs54vs11vs
- *      400:
+ *      401:
  *        description: Bad Request
  *        content:
  *          application/json:

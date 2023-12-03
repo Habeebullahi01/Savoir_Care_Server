@@ -49,7 +49,7 @@ const isAuth = (req, res, next) => {
  *          schema:
  *            $ref: '#/components/schemas/SignupRequest'
  *    responses:
- *      200:
+ *      201:
  *        description: OK
  *        content:
  *          application/json:
@@ -59,7 +59,7 @@ const isAuth = (req, res, next) => {
  *              auth: true
  *              msg: Success
  *              token: Bearer 65dss651vsv5sv5dvs54vs11vs
- *      400:
+ *      401:
  *        description: Bad Request
  *        content:
  *          application/json:
@@ -92,7 +92,7 @@ authRoute.route("/signup").post(signup);
  *          schema:
  *            $ref: '#/components/schemas/SignupRequest'
  *    responses:
- *      200:
+ *      201:
  *        description: Signup successful
  *        content:
  *          application/json:
@@ -102,7 +102,7 @@ authRoute.route("/signup").post(signup);
  *              auth: true
  *              msg: Success
  *              token: Bearer 65dss651vsv5sv5dvs54vs11vs
- *      400:
+ *      401:
  *        description: Bad Request
  *        content:
  *          application/json:

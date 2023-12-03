@@ -1,4 +1,10 @@
 const mongoose = require("mongoose");
+/**
+ * @openapi
+ * Components:
+ *  Schema:
+ *    Order:
+ */
 
 const orderSchema = new mongoose.Schema({
   user_id: String,

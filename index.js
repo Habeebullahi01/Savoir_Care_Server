@@ -8,7 +8,8 @@ require("dotenv").config({ path: "config.env" });
 const productRoute = require("./routes/products.js");
 const cartRoute = require("./routes/cart.js");
 const orderRoute = require("./routes/order.js");
-
+const swaggerUI = require("swagger-ui-dist").SwaggerUIBundle;
+const swaggerDocs = require("./utils/swagger.js").swaggerDocs;
 // const { auth, requiresAuth } = require("express-openid-connect");
 // const { auth, requiredScopes } = require("express-oauth2-jwt-bearer");
 
@@ -34,7 +35,7 @@ const corsOptions = {
     }
   },
 };
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(cookieParser());
 // Auth0
@@ -104,8 +105,7 @@ app.listen(4000, () => {
         "The server was unable to start for the following reason: " + err
       );
     });
-
-  // console.log("server is running");
+  swaggerDocs(app, 4000);
 });
 
 module.exports = app;

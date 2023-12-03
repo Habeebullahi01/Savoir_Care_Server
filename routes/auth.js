@@ -35,7 +35,91 @@ const isAuth = (req, res, next) => {
   }
 };
 
+/**
+ * @openapi
+ * /auth/signup:
+ *  post:
+ *    tags:
+ *    - Authentication
+ *    summary: Creates a new customer account
+ *    description: Authenticates users
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/SignupRequest'
+ *    responses:
+ *      200:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/SignupResponse'
+ *            example:
+ *              auth: true
+ *              msg: Success
+ *              token: Bearer 65dss651vsv5sv5dvs54vs11vs
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                msg:
+ *                  type: string
+ *                auth:
+ *                  type: boolean
+ *                invalidCred:
+ *                  type: string
+ *            example:
+ *              auth: false
+ *              msg: User already exists
+ *              invalidCred: email
+ */
 authRoute.route("/signup").post(signup);
+/**
+ * @openapi
+ * /auth/admin/signup:
+ *  post:
+ *    tags:
+ *    - Authentication
+ *    summary: Creates a new Administrator account.
+ *    description: Authenticates administrators
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/SignupRequest'
+ *    responses:
+ *      200:
+ *        description: Signup successful
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/SignupResponse'
+ *            example:
+ *              auth: true
+ *              msg: Success
+ *              token: Bearer 65dss651vsv5sv5dvs54vs11vs
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                msg:
+ *                  type: string
+ *                auth:
+ *                  type: boolean
+ *                invalidCred:
+ *                  type: string
+ *            example:
+ *              auth: false
+ *              msg: User already exists
+ *              invalidCred: email
+ */
 authRoute.route("/admin/signup").post(adminSignup);
 authRoute.route("/logout").post((req, res, next) => {
   req.logout(() => {
@@ -52,28 +136,22 @@ authRoute.route("/failure").get((req, res, next) => {
 
 authRoute.route("/login").post(async (req, res, next) => {
   if (req.body == null || Object.keys(req.body).length === 0) {
-    res
-      .status(400)
-      .json({
-        absent_field: ["email", "password"],
-        message: "Request body should not be empty.",
-      });
+    res.status(400).json({
+      absent_field: ["email", "password"],
+      message: "Request body should not be empty.",
+    });
     // return;
   } else if (!req.body.email) {
-    res
-      .status(400)
-      .json({
-        absent_field: "email",
-        message: "Email field should not be empty.",
-      });
+    res.status(400).json({
+      absent_field: "email",
+      message: "Email field should not be empty.",
+    });
     return;
   } else if (!req.body.password) {
-    res
-      .status(400)
-      .json({
-        absent_field: "password",
-        message: "Password field should not be empty.",
-      });
+    res.status(400).json({
+      absent_field: "password",
+      message: "Password field should not be empty.",
+    });
     return;
   }
   // console.log(req.body);

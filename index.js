@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+// const config = require("./utils/keys.js");
 const authRoute = require("./routes/auth.js");
 const passport = require("passport");
 const cors = require("cors");
@@ -8,12 +9,23 @@ require("dotenv").config({ path: "config.env" });
 const productRoute = require("./routes/products.js");
 const cartRoute = require("./routes/cart.js");
 const orderRoute = require("./routes/order.js");
-const swaggerUI = require("swagger-ui-dist").SwaggerUIBundle;
+// const swaggerUI = require("swagger-ui-dist").SwaggerUIBundle;
 const swaggerDocs = require("./utils/swagger.js").swaggerDocs;
 // const { auth, requiresAuth } = require("express-openid-connect");
 // const { auth, requiredScopes } = require("express-oauth2-jwt-bearer");
 
 const app = express();
+// app.use((req, res, next) => {
+//   config
+//     .then(() => {
+//       console.log("Files downloaded!");
+//       next();
+//     })
+//     .catch((e) => {
+//       console.log("Unable to download files!");
+//       console.log(e);
+//     });
+// });
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -30,7 +42,6 @@ const corsOptions = {
     if (corsWhitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      // console.log(origin);
       callback(new Error("Not allowed by CORS."));
     }
   },
@@ -38,19 +49,6 @@ const corsOptions = {
 app.use(cors());
 
 app.use(cookieParser());
-// Auth0
-
-// const checkJwt = auth({
-//   audience: "https://haleemah-test-api",
-//   issuerBaseURL: `https://dev-qdwlfq2p.us.auth0.com/`,
-// });
-
-// app.get("/success", checkJwt, (req, res) => {
-//   res.send("Login has been successful");
-// });
-// app.get("/profile", checkJwt, (req, res) => {
-//   res.send(req.oidc.user);
-// });
 
 //DATABASE CONNECTION
 const connection = new Promise((resolve, reject) => {
@@ -91,14 +89,10 @@ app.use("/order", orderRoute);
 
 app.listen(4000, () => {
   // connect to database
-  // dbo.connectToServer((err) => {
-  //   if (err) {
-  //     console.error(err);
-  //   }
-  // });
   connection
     .then(() => {
-      console.log("Server is running on port 4000");
+      // console.log("Successfully connected to DB");
+      console.log("Database Connection Established. Server is running");
     })
     .catch((err) => {
       console.log(

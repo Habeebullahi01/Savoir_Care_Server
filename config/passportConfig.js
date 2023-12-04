@@ -1,14 +1,31 @@
 const User = require("../models/User");
 const Admin = require("../models/Admin");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+// const passport = require("passport");
+// const LocalStrategy = require("passport-local").Strategy;
 const JWT_Strategy = require("passport-jwt");
 const crypto = require("crypto");
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+// const path = require("path");
+// const config = require("../utils/keys");
 
-const pathToKey = path.join(__dirname, "..", "/utils", "pub_key.pem");
-const PUB_KEY = fs.readFileSync(pathToKey, "utf-8");
+require("dotenv").config({ path: "config.env" });
+// const PUB_KEY_PATH = process.env.PUB_KEY_PATH;
+let PUB_KEY;
+// if (fs.existsSync(PUB_KEY_PATH)) {
+//   PUB_KEY = fs.readFileSync(pathToKey, "utf-8");
+// } else {
+//   config.then(() => {
+//     PUB_KEY = fs.readFileSync(pathToKey, "utf-8");
+//   });
+// }
+
+PUB_KEY = process.env.PUB_KEY;
+// PUB_KEY = fs.writeFile("./pub_key.pem", process.env.PUB_KEY, (err) => {
+//   if (err) {
+//     console.log("Error crearing pub pem file.");
+//     console.log(err);
+//   }
+// });
 
 // JWT Config
 const [JwtStrategy, ExtractJwt] = [

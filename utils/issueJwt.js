@@ -1,27 +1,18 @@
 const jwt = require("jsonwebtoken");
-// const path = require("path");
-// const fs = require("fs");
-// const config = require("./keys");
+const path = require("path");
+const fs = require("fs");
 require("dotenv").config({ path: "config.env" });
+const { Buffer } = require("node:buffer");
 
-// const PRIV_KEY_PATH = process.env.PRIV_KEY_PATH;
+// PEM FILE IN PROJECT FOLDER
 // const PRIV_KEY = fs.readFileSync("./priv_key.pem", "utf-8");
-let PRIV_KEY;
-// if (fs.existsSync(PRIV_KEY_PATH)) {
-//   PRIV_KEY = fs.readFileSync(PRIV_KEY_PATH, "utf-8");
-// } else {
-//   config.then(() => {
-//     PRIV_KEY = fs.readFileSync(PRIV_KEY_PATH, "utf-8");
-//   });
-// }
 
-PRIV_KEY = process.env.PRIV_KEY;
-// PRIV_KEY = fs.writeFile("./priv_key.pem", process.env.PRIV_KEY, (err) => {
-//   if (err) {
-//     console.log("Error creating priv pem file.");
-//     console.log(err);
-//   }
-// });
+// PEM FILE PATH IN ENV, FILE IN UNPUBLISHED LOCATION
+// const privKeyPath = process.env.PRIV_KEY_PATH;
+// const PRIV_KEY = fs.readFileSync(privKeyPath, "utf-8");
+
+// RSA KEY IN ENV AS STRING
+const PRIV_KEY = process.env.PRIV_KEY;
 
 const issueJWT = (user) => {
   const _id = user._id;

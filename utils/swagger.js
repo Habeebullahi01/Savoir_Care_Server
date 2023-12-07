@@ -15,8 +15,12 @@ const options = {
     },
     servers: [
       {
+        url: "https://temporal-state-363009.rj.r.appspot.com/",
+        description: "GCP server",
+      },
+      {
         url: "https://e-store-server.cyclic.app/",
-        description: "Main server",
+        description: "Cyclic server",
       },
     ],
   },

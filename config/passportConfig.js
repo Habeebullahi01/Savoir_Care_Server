@@ -4,28 +4,20 @@ const Admin = require("../models/Admin");
 // const LocalStrategy = require("passport-local").Strategy;
 const JWT_Strategy = require("passport-jwt");
 const crypto = require("crypto");
-// const fs = require("fs");
-// const path = require("path");
-// const config = require("../utils/keys");
+const fs = require("fs");
+const path = require("path");
 
 require("dotenv").config({ path: "config.env" });
-// const PUB_KEY_PATH = process.env.PUB_KEY_PATH;
-let PUB_KEY;
-// if (fs.existsSync(PUB_KEY_PATH)) {
-//   PUB_KEY = fs.readFileSync(pathToKey, "utf-8");
-// } else {
-//   config.then(() => {
-//     PUB_KEY = fs.readFileSync(pathToKey, "utf-8");
-//   });
-// }
 
-PUB_KEY = process.env.PUB_KEY;
-// PUB_KEY = fs.writeFile("./pub_key.pem", process.env.PUB_KEY, (err) => {
-//   if (err) {
-//     console.log("Error crearing pub pem file.");
-//     console.log(err);
-//   }
-// });
+// PEM FILE IN PROJECT FOLDER
+// const PUB_KEY = fs.readFileSync("./pub_key.pem", "utf-8");
+
+// PEM FILE PATH IN ENV, FILE IN UNPUBLISHED LOCATION
+// const pubKeyPath = process.env.PUB_KEY_PATH;
+// const PUB_KEY = fs.readFileSync(pubKeyPath, "utf-8");
+
+// RSA KEY STORED IN ENV AS A STRING
+const PUB_KEY = process.env.PUB_KEY;
 
 // JWT Config
 const [JwtStrategy, ExtractJwt] = [

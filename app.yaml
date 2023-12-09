@@ -1,8 +1,5 @@
 runtime:
   nodejs18
-  # PUB_KEY_PATH: "/tmp/pub_key.pem"
-  # PRIV_KEY_PATH: "/tmp/priv_key.pem"
-# entrypoint: "yarn run download && yarn start"
 includes:
   - env_variables.yaml
 runtime_config:

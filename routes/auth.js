@@ -87,6 +87,7 @@ authRoute.route("/signup").post(signup);
  *    summary: Creates a new Administrator account.
  *    description: Authenticates administrators
  *    requestBody:
+ *      required: true
  *      content:
  *        application/json:
  *          schema:
@@ -121,6 +122,15 @@ authRoute.route("/signup").post(signup);
  *              invalidCred: email
  */
 authRoute.route("/admin/signup").post(adminSignup);
+/**
+ * @openapi
+ * /auth/logout:
+ *  post:
+ *    tags:
+ *    - Authentication
+ *    summary: Logs a client out.
+ *    requestBody:
+ */
 authRoute.route("/logout").post((req, res, next) => {
   req.logout(() => {
     res.json({ msg: "Logged Out." });
@@ -134,6 +144,94 @@ authRoute.route("/failure").get((req, res, next) => {
   res.send("Login Falied. Check credentials. ");
 });
 
+/**
+ * @openapi
+ * /auth/login:
+ *  post:
+ *    tags:
+ *    - Authentication
+ *    summary: Logs a user in.
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/LoginRequest'
+ *    responses:
+ *      200:
+ *        description: Login successful.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/SignupResponse'
+ *      400:
+ *        description: Empty request body
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *                - $ref: '#/components/schemas/BadLoginResponse1'
+ *                - $ref: '#/components/schemas/BadLoginResponse2'
+ *                - $ref: '#/components/schemas/BadLoginResponse3'
+ *      401:
+ *        description: Invalid credential
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *                - type: object
+ *                  properties:
+ *                    message:
+ *                     type: string
+ *                     example: "Invalid password"
+ *                    auth:
+ *                     type: bool
+ *                     example: false
+ *                    invalidCred:
+ *                     type: string
+ *                     example: "password"
+ *                - type: object
+ *                  properties:
+ *                    message:
+ *                     type: string
+ *                     example: "Invalid User"
+ *                    auth:
+ *                     type: bool
+ *                     example: false
+ *                    invalidCred:
+ *                     type: string
+ *                     example: "email"
+ * components:
+ *  schemas:
+ *    BadLoginResponse1:
+ *      type: object
+ *      properties:
+ *        absent_field:
+ *         type: array
+ *         example: ["email","password"]
+ *        message:
+ *         type: string
+ *         example: "Request body should not be empty."
+ *    BadLoginResponse2:
+ *      type: object
+ *      properties:
+ *        absent_field:
+ *         type: string
+ *         example: "email"
+ *        message:
+ *         type: string
+ *         example: "Email field should not be empty."
+ *    BadLoginResponse3:
+ *      type: object
+ *      properties:
+ *        absent_field:
+ *         type: string
+ *         example: "password"
+ *        message:
+ *         type: string
+ *         example: "Password field should not be empty."
+ *
+ */
 authRoute.route("/login").post(async (req, res, next) => {
   if (req.body == null || Object.keys(req.body).length === 0) {
     res.status(400).json({

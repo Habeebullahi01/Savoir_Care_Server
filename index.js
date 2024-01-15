@@ -51,21 +51,21 @@ app.use(cors());
 app.use(cookieParser());
 
 //DATABASE CONNECTION
-const connection = new Promise((resolve, reject) => {
-  try {
-    mongoose.connect(process.env.ATLAS_URI, {}, (err) => {
-      if (err) {
-        //  console.error("Unable to connect " + err);
-        reject("Unable to connect to Database: " + err);
-      } else {
-        console.log("Successfully Connected to DB");
-        resolve();
-      }
-    });
-  } catch (error) {
-    console.log("Connection error:" + err);
-  }
-});
+// const connection = new Promise((resolve, reject) => {
+//   try {
+//     mongoose.connect(process.env.ATLAS_URI, {}, (err) => {
+//       if (err) {
+//         //  console.error("Unable to connect " + err);
+//         reject("Unable to connect to Database: " + err);
+//       } else {
+//         console.log("Successfully Connected to DB");
+//         resolve();
+//       }
+//     });
+//   } catch (error) {
+//     console.log("Connection error:" + err);
+//   }
+// });
 
 // SESSION
 // app.use(

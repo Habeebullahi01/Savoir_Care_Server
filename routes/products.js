@@ -17,6 +17,15 @@ function checkAdmin(req, res, next) {
   }
 }
 
+/**
+ * @openapi
+ * /products:
+ *  get:
+ *    tags:
+ *    - Products
+ *    summary: Get collection of products
+ *    description: This returns a collection of products. The result is paginated.
+ */
 productRoute.route("/").get(productController.getProducts);
 productRoute.route("/addProduct").post(
   passport.authenticate("jwt", { session: false }),

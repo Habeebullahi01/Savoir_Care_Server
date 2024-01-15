@@ -86,8 +86,8 @@ app.use("/auth", authRoute);
 app.use("/products", productRoute);
 app.use("/cart", cartRoute);
 app.use("/order", orderRoute);
-
-app.listen(4000, () => {
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
   // connect to database
   connection
     .then(() => {
@@ -99,7 +99,7 @@ app.listen(4000, () => {
         "The server was unable to start for the following reason: " + err
       );
     });
-  swaggerDocs(app, 4000);
+  swaggerDocs(app, PORT);
 });
 
 module.exports = app;
